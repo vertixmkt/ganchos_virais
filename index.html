@@ -1,0 +1,873 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>gpt | Biblioteca de Ganchos Virais</title>
+    <meta name="description" content="Biblioteca em português de ganchos virais para Reels, TikTok, anúncios, carrosséis e posts de redes sociais." />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #050505;
+        --surface: rgba(18, 18, 20, 0.82);
+        --surface-strong: #111113;
+        --line: rgba(255, 255, 255, 0.11);
+        --line-strong: rgba(255, 255, 255, 0.18);
+        --text: #f7f7f7;
+        --muted: #a0a0a0;
+        --soft: #d8d8d8;
+        --accent: #3b82f6;
+        --accent-2: #22c55e;
+        --warning: #f59e0b;
+        --danger: #ef4444;
+        --radius: 18px;
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      * { box-sizing: border-box; }
+
+      html {
+        background: var(--bg);
+      }
+
+      body {
+        margin: 0;
+        color: var(--text);
+        min-height: 100vh;
+        background:
+          radial-gradient(circle at 20% 0%, rgba(59, 130, 246, 0.24), transparent 30%),
+          radial-gradient(circle at 90% 20%, rgba(34, 197, 94, 0.11), transparent 26%),
+          linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px),
+          #050505;
+        background-size: auto, auto, 44px 44px, 44px 44px;
+      }
+
+      button,
+      input,
+      select {
+        font: inherit;
+      }
+
+      button {
+        cursor: pointer;
+      }
+
+      .shell {
+        width: min(1180px, calc(100% - 32px));
+        margin: 0 auto;
+      }
+
+      .hero {
+        padding: 30px 0 22px;
+      }
+
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 30;
+        border-bottom: 1px solid rgba(255,255,255,0.08);
+        background: rgba(0,0,0,0.84);
+        backdrop-filter: blur(18px);
+      }
+
+      .topbar-inner {
+        min-height: 68px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+      }
+
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        color: var(--text);
+        text-decoration: none;
+      }
+
+      .brand-mark {
+        width: 40px;
+        height: 40px;
+        border-radius: 14px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(180deg, rgba(47,85,223,0.88) 0%, rgba(23,44,140,0.78) 48%, rgba(5,5,5,0.62) 100%);
+        border: 1px solid rgba(78,119,255,0.32);
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.18), 0 4px 16px rgba(47,85,223,0.30);
+      }
+
+      .brand-title {
+        display: block;
+        font-size: 18px;
+        font-weight: 950;
+        line-height: 1;
+      }
+
+      .brand-subtitle {
+        display: block;
+        margin-top: 4px;
+        color: var(--muted);
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+
+      .login-btn {
+        min-height: 42px;
+        border: 0;
+        border-radius: 999px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 0 18px;
+        color: #fff;
+        background: linear-gradient(135deg, #1d4ed8 0%, #000000 100%);
+        font-size: 14px;
+        font-weight: 950;
+        transition: transform 0.18s ease, filter 0.18s ease;
+      }
+
+      .login-btn:hover {
+        transform: translateY(-1px);
+        filter: brightness(1.08);
+      }
+
+      .account-menu {
+        position: relative;
+      }
+
+      .account-button {
+        min-height: 42px;
+        max-width: 240px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        padding: 4px 12px 4px 4px;
+        color: #fff;
+        background: rgba(255,255,255,0.055);
+        font-size: 13px;
+        font-weight: 900;
+      }
+
+      .avatar {
+        width: 34px;
+        height: 34px;
+        border-radius: 999px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex: 0 0 auto;
+        background: linear-gradient(135deg, #1d4ed8 0%, #000 100%);
+        font-size: 12px;
+        font-weight: 950;
+      }
+
+      .account-email {
+        max-width: 170px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .menu-popover {
+        position: absolute;
+        right: 0;
+        top: calc(100% + 8px);
+        width: 260px;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        overflow: hidden;
+        background: #0f0f0f;
+        box-shadow: 0 22px 50px rgba(0,0,0,0.6);
+      }
+
+      .menu-popover[hidden] {
+        display: none;
+      }
+
+      .menu-head {
+        padding: 14px;
+        border-bottom: 1px solid rgba(255,255,255,0.08);
+      }
+
+      .menu-head strong,
+      .menu-head span {
+        display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .menu-head span {
+        margin-top: 4px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .menu-action {
+        width: 100%;
+        min-height: 44px;
+        border: 0;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 0 14px;
+        color: var(--muted);
+        background: transparent;
+        font-weight: 850;
+        text-align: left;
+      }
+
+      .menu-action:hover {
+        color: #fff;
+        background: rgba(255,255,255,0.06);
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.06);
+        color: var(--soft);
+        padding: 7px 11px;
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        max-width: 760px;
+        margin: 16px 0 10px;
+        font-size: clamp(34px, 5.6vw, 68px);
+        line-height: 0.96;
+        letter-spacing: 0;
+      }
+
+      .lead {
+        max-width: 680px;
+        margin: 0;
+        color: var(--muted);
+        font-size: clamp(15px, 1.7vw, 18px);
+        line-height: 1.45;
+      }
+
+      .toolbar {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        padding: 14px 0;
+        backdrop-filter: blur(18px);
+        background: rgba(5, 5, 5, 0.76);
+        border-block: 1px solid rgba(255,255,255,0.07);
+      }
+
+      .controls {
+        display: grid;
+        grid-template-columns: minmax(280px, 1.15fr) minmax(280px, 0.95fr) minmax(300px, auto);
+        gap: 10px;
+        align-items: center;
+      }
+
+      .field {
+        position: relative;
+        min-width: 0;
+      }
+
+      .field i,
+      .field svg {
+        position: absolute;
+        left: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--muted);
+        width: 18px;
+        height: 18px;
+        pointer-events: none;
+      }
+
+      .input,
+      .select {
+        width: 100%;
+        min-height: 48px;
+        color: var(--text);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.065);
+        outline: none;
+        padding: 0 14px 0 42px;
+      }
+
+      .select {
+        padding-left: 14px;
+      }
+
+      .input:focus,
+      .select:focus {
+        border-color: rgba(59, 130, 246, 0.9);
+        box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+      }
+
+      .btn {
+        min-height: 48px;
+        height: 48px;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        color: var(--text);
+        background: rgba(255,255,255,0.075);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 0 16px;
+        font-weight: 800;
+        white-space: nowrap;
+        transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+      }
+
+      .btn:hover {
+        transform: translateY(-1px);
+        border-color: var(--line-strong);
+        background: rgba(255,255,255,0.11);
+      }
+
+      .btn.primary {
+        border-color: rgba(59, 130, 246, 0.5);
+        background: linear-gradient(135deg, #2563eb, #111827);
+        width: 100%;
+      }
+
+      .btn svg {
+        width: 20px;
+        height: 20px;
+        flex: 0 0 auto;
+      }
+
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin: 18px 0 0;
+      }
+
+      .chip {
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.055);
+        color: var(--soft);
+        padding: 9px 12px;
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      .chip.active {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: white;
+      }
+
+      .workspace {
+        display: grid;
+        grid-template-columns: 260px 1fr;
+        gap: 18px;
+        padding: 24px 0 56px;
+      }
+
+      .panel {
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: var(--surface);
+        box-shadow: 0 24px 60px rgba(0,0,0,0.26);
+      }
+
+      .sidebar {
+        align-self: start;
+        position: sticky;
+        top: 104px;
+        padding: 12px;
+      }
+
+      .category-btn {
+        width: 100%;
+        min-height: 42px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        color: var(--soft);
+        border: 1px solid transparent;
+        border-radius: 12px;
+        background: transparent;
+        padding: 9px 10px;
+        text-align: left;
+      }
+
+      .category-btn:hover,
+      .category-btn.active {
+        border-color: var(--line);
+        background: rgba(255,255,255,0.08);
+        color: var(--text);
+      }
+
+      .category-label {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      .count {
+        border-radius: 999px;
+        background: rgba(255,255,255,0.09);
+        color: var(--muted);
+        padding: 3px 7px;
+        font-size: 11px;
+        font-weight: 800;
+      }
+
+      .results-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 14px 16px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .results-head h2 {
+        margin: 0;
+        font-size: 16px;
+      }
+
+      .results-head p {
+        margin: 3px 0 0;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+        padding: 14px;
+      }
+
+      .card {
+        min-height: 168px;
+        display: flex;
+        flex-direction: column;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: linear-gradient(180deg, rgba(255,255,255,0.075), rgba(255,255,255,0.035));
+        padding: 14px;
+      }
+
+      .card-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        margin-bottom: 12px;
+      }
+
+      .tag {
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        color: #dbeafe;
+        background: rgba(59, 130, 246, 0.13);
+        border: 1px solid rgba(59, 130, 246, 0.22);
+        border-radius: 999px;
+        padding: 5px 9px;
+        font-size: 11px;
+        font-weight: 900;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+      }
+
+      .hook-text {
+        margin: 0;
+        flex: 1;
+        color: #f4f4f5;
+        font-size: 16px;
+        line-height: 1.45;
+      }
+
+      .card-actions {
+        display: flex;
+        gap: 8px;
+        margin-top: 16px;
+      }
+
+      .small-btn {
+        min-height: 38px;
+        flex: 1;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        color: var(--soft);
+        background: rgba(255,255,255,0.06);
+        font-size: 12px;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+      }
+
+      .small-btn i {
+        width: 16px;
+        height: 16px;
+      }
+
+      .small-btn:hover {
+        color: var(--text);
+        border-color: var(--line-strong);
+      }
+
+      .empty {
+        padding: 54px 20px;
+        text-align: center;
+        color: var(--muted);
+      }
+
+      .gate {
+        margin: 28px auto 56px;
+        max-width: 720px;
+        border: 1px solid var(--line);
+        border-radius: 24px;
+        background: var(--surface);
+        padding: 32px;
+        text-align: center;
+      }
+
+      .gate-icon {
+        width: 54px;
+        height: 54px;
+        margin: 0 auto 16px;
+        border-radius: 18px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #1d4ed8 0%, #000 100%);
+      }
+
+      .gate h2 {
+        margin: 0;
+        font-size: 28px;
+      }
+
+      .gate p {
+        max-width: 520px;
+        margin: 10px auto 0;
+        color: var(--muted);
+        line-height: 1.55;
+      }
+
+      .gate .login-btn {
+        margin-top: 20px;
+      }
+
+      .modal-backdrop {
+        position: fixed;
+        inset: 0;
+        z-index: 100;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 18px;
+        background: rgba(0,0,0,0.78);
+        backdrop-filter: blur(12px);
+      }
+
+      .modal-backdrop[hidden] {
+        display: none;
+      }
+
+      .modal {
+        width: min(420px, 100%);
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        background: linear-gradient(180deg, rgba(18,18,20,0.96), rgba(8,8,9,0.96));
+        box-shadow: 0 24px 80px rgba(0,0,0,0.62);
+        overflow: hidden;
+      }
+
+      .modal-head {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 14px;
+        padding: 22px 22px 14px;
+      }
+
+      .modal h2 {
+        margin: 0;
+        font-size: 22px;
+      }
+
+      .modal p {
+        margin: 6px 0 0;
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.45;
+      }
+
+      .close-btn {
+        width: 38px;
+        height: 38px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--muted);
+        background: transparent;
+      }
+
+      .auth-form {
+        display: grid;
+        gap: 12px;
+        padding: 0 22px 22px;
+      }
+
+      .auth-label {
+        display: grid;
+        gap: 6px;
+        color: var(--muted);
+        font-size: 11px;
+        font-weight: 900;
+        letter-spacing: 0.12em;
+        text-align: left;
+        text-transform: uppercase;
+      }
+
+      .auth-input {
+        width: 100%;
+        min-height: 46px;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 0 12px;
+        color: #fff;
+        background: rgba(255,255,255,0.065);
+        outline: none;
+      }
+
+      .auth-input:focus {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 4px rgba(59,130,246,0.15);
+      }
+
+      .auth-message {
+        display: none;
+        border-radius: 12px;
+        padding: 10px 12px;
+        font-size: 13px;
+        font-weight: 800;
+        text-align: left;
+      }
+
+      .auth-message.error {
+        display: block;
+        color: #fecaca;
+        background: rgba(239,68,68,0.12);
+        border: 1px solid rgba(239,68,68,0.24);
+      }
+
+      .auth-message.success {
+        display: block;
+        color: #bfdbfe;
+        background: rgba(59,130,246,0.12);
+        border: 1px solid rgba(59,130,246,0.24);
+      }
+
+      .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        padding: 0 14px 18px;
+      }
+
+      .toast {
+        position: fixed;
+        right: 18px;
+        bottom: 18px;
+        z-index: 20;
+        display: none;
+        border: 1px solid rgba(34,197,94,0.32);
+        border-radius: 14px;
+        background: rgba(20, 83, 45, 0.92);
+        color: #dcfce7;
+        padding: 12px 14px;
+        font-weight: 800;
+        box-shadow: 0 18px 50px rgba(0,0,0,0.34);
+      }
+
+      .toast.visible {
+        display: block;
+      }
+
+      footer {
+        color: var(--muted);
+        border-top: 1px solid var(--line);
+        padding: 22px 0 34px;
+        font-size: 13px;
+      }
+
+      @media (max-width: 900px) {
+        .controls,
+        .workspace,
+        .grid {
+          grid-template-columns: 1fr;
+        }
+
+        .sidebar {
+          position: static;
+        }
+
+        .hero {
+          padding-top: 24px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="topbar">
+      <div class="shell topbar-inner">
+        <a class="brand" href="./index.html" aria-label="gpt">
+          <span class="brand-mark"><i data-lucide="sparkles"></i></span>
+          <span>
+            <span class="brand-title">gpt</span>
+            <span class="brand-subtitle">ganchos virais</span>
+          </span>
+        </a>
+        <button id="loginBtn" class="login-btn" type="button"><i data-lucide="log-in"></i> Entrar</button>
+        <div id="accountMenu" class="account-menu" hidden>
+          <button id="accountButton" class="account-button" type="button">
+            <span id="accountAvatar" class="avatar">GT</span>
+            <span id="accountEmail" class="account-email">Usuário</span>
+            <i data-lucide="chevron-down"></i>
+          </button>
+          <div id="menuPopover" class="menu-popover" hidden>
+            <div class="menu-head">
+              <strong id="menuName">Usuário</strong>
+              <span id="menuEmail">email</span>
+            </div>
+            <button id="logoutBtn" class="menu-action" type="button"><i data-lucide="log-out"></i> Sair da plataforma</button>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <header class="shell hero">
+      <span class="eyebrow"><i data-lucide="sparkles"></i> gpt · ganchos virais em PT-BR</span>
+      <h1>Biblioteca de ganchos para conteúdo que prende atenção.</h1>
+      <p class="lead">Pesquise, filtre e copie aberturas prontas para Reels, TikTok, anúncios, carrosséis, stories e posts de redes sociais. Tudo focado em ganchos, sem outros módulos.</p>
+    </header>
+
+    <section id="loginGate" class="shell gate" hidden>
+      <span class="gate-icon"><i data-lucide="lock-keyhole"></i></span>
+      <h2>Entre para acessar os ganchos</h2>
+      <p>Use o mesmo login do Turbo GPT para carregar a biblioteca completa de ganchos virais em PT-BR.</p>
+      <button class="login-btn" type="button" data-open-login><i data-lucide="log-in"></i> Entrar na plataforma</button>
+    </section>
+
+    <section id="accessGate" class="shell gate" hidden>
+      <span class="gate-icon"><i data-lucide="badge-alert"></i></span>
+      <h2>Acesso não liberado</h2>
+      <p>Encontramos seu login, mas não localizamos uma compra ativa para este email no banco do Turbo GPT.</p>
+    </section>
+
+    <section id="appShell" hidden>
+    <section class="toolbar">
+      <div class="shell">
+        <div class="controls">
+          <label class="field">
+            <i data-lucide="search"></i>
+            <input id="searchInput" class="input" type="search" placeholder="Tipo de gancho: dor, curiosidade, venda, segredo..." />
+          </label>
+          <label class="field">
+            <i data-lucide="target"></i>
+            <input id="topicInput" class="input" type="text" placeholder="Tema/nicho para adaptar: ex. emagrecimento, tráfego pago..." />
+          </label>
+          <button id="randomBtn" class="btn primary" type="button"><i data-lucide="shuffle"></i> Copiar gancho aleatório</button>
+        </div>
+        <div id="intentChips" class="chips" aria-label="Filtros rápidos"></div>
+      </div>
+    </section>
+
+    <main class="shell workspace">
+      <aside class="panel sidebar">
+        <div id="categories"></div>
+      </aside>
+
+      <section class="panel">
+        <div class="results-head">
+          <div>
+            <h2>Ganchos encontrados</h2>
+            <p id="resultSummary">Carregando biblioteca...</p>
+          </div>
+          <button id="clearBtn" class="btn" type="button"><i data-lucide="rotate-ccw"></i> Limpar</button>
+        </div>
+
+        <div id="results" class="grid"></div>
+        <div id="emptyState" class="empty" hidden>Nenhum gancho encontrado. Tente outro termo ou limpe os filtros.</div>
+        <div class="pagination">
+          <button id="prevBtn" class="btn" type="button">Anterior</button>
+          <span id="pageLabel" class="count">1/1</span>
+          <button id="nextBtn" class="btn" type="button">Próxima</button>
+        </div>
+      </section>
+    </main>
+
+    <footer class="shell">
+      Projeto gpt · versão enxuta baseada apenas na biblioteca de ganchos.
+    </footer>
+    </section>
+
+    <div id="toast" class="toast">Gancho copiado.</div>
+
+    <div id="loginModal" class="modal-backdrop" hidden>
+      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
+        <div class="modal-head">
+          <div>
+            <span class="brand-mark"><i data-lucide="log-in"></i></span>
+            <h2 id="loginTitle">Entrar na plataforma</h2>
+            <p>Acesse com o mesmo email e senha usados no Turbo GPT.</p>
+          </div>
+          <button id="closeLoginBtn" class="close-btn" type="button" aria-label="Fechar"><i data-lucide="x"></i></button>
+        </div>
+        <form id="loginForm" class="auth-form">
+          <label class="auth-label">Email
+            <input id="emailInput" class="auth-input" type="email" autocomplete="email" required placeholder="seu@email.com" />
+          </label>
+          <label class="auth-label">Senha
+            <input id="passwordInput" class="auth-input" type="password" autocomplete="current-password" required placeholder="Sua senha" />
+          </label>
+          <div id="authMessage" class="auth-message"></div>
+          <button id="submitLoginBtn" class="btn primary" type="submit"><i data-lucide="log-in"></i> Entrar</button>
+          <button id="forgotPasswordBtn" class="menu-action" type="button"><i data-lucide="key-round"></i> Esqueci minha senha</button>
+        </form>
+      </div>
+    </div>
+
+    <script src="./js/config.js"></script>
+    <script src="./js/supabase-init.js"></script>
+    <script src="./js/app.js"></script>
+  </body>
+</html>
