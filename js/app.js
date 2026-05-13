@@ -861,10 +861,10 @@
         .select("plan, status")
         .eq("email", user.email.toLowerCase().trim())
         .eq("status", "active")
-        .maybeSingle();
+        .limit(1);
 
       if (result && result.error) return null;
-      return result && result.data ? result.data.plan : null;
+      return result && result.data && result.data.length ? result.data[0] : null;
     } catch (_err) {
       return null;
     }
