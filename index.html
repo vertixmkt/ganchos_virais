@@ -18,8 +18,8 @@
         --text: #f7f7f7;
         --muted: #a0a0a0;
         --soft: #d8d8d8;
-        --accent: #3b82f6;
-        --accent-2: #22c55e;
+        --accent: #22c55e;
+        --accent-2: #84cc16;
         --warning: #f59e0b;
         --danger: #ef4444;
         --radius: 18px;
@@ -37,8 +37,8 @@
         color: var(--text);
         min-height: 100vh;
         background:
-          radial-gradient(circle at 20% 0%, rgba(59, 130, 246, 0.24), transparent 30%),
-          radial-gradient(circle at 90% 20%, rgba(34, 197, 94, 0.11), transparent 26%),
+          radial-gradient(circle at 20% 0%, rgba(34, 197, 94, 0.24), transparent 30%),
+          radial-gradient(circle at 90% 20%, rgba(132, 204, 22, 0.12), transparent 26%),
           linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
           linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px),
           #050505;
@@ -96,9 +96,9 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        background: linear-gradient(180deg, rgba(47,85,223,0.88) 0%, rgba(23,44,140,0.78) 48%, rgba(5,5,5,0.62) 100%);
-        border: 1px solid rgba(78,119,255,0.32);
-        box-shadow: inset 0 1px 0 rgba(255,255,255,0.18), 0 4px 16px rgba(47,85,223,0.30);
+        background: linear-gradient(180deg, rgba(34,197,94,0.9) 0%, rgba(21,128,61,0.8) 48%, rgba(5,5,5,0.62) 100%);
+        border: 1px solid rgba(132,204,22,0.34);
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.18), 0 4px 16px rgba(34,197,94,0.28);
       }
 
       .brand-title {
@@ -128,7 +128,7 @@
         gap: 8px;
         padding: 0 18px;
         color: #fff;
-        background: linear-gradient(135deg, #1d4ed8 0%, #000000 100%);
+        background: linear-gradient(135deg, #22c55e 0%, #052e16 100%);
         font-size: 14px;
         font-weight: 950;
         transition: transform 0.18s ease, filter 0.18s ease;
@@ -166,7 +166,7 @@
         align-items: center;
         justify-content: center;
         flex: 0 0 auto;
-        background: linear-gradient(135deg, #1d4ed8 0%, #000 100%);
+        background: linear-gradient(135deg, #22c55e 0%, #052e16 100%);
         font-size: 12px;
         font-weight: 950;
       }
@@ -315,8 +315,8 @@
 
       .input:focus,
       .select:focus {
-        border-color: rgba(59, 130, 246, 0.9);
-        box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+        border-color: rgba(34, 197, 94, 0.9);
+        box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.16);
       }
 
       .btn {
@@ -343,8 +343,8 @@
       }
 
       .btn.primary {
-        border-color: rgba(59, 130, 246, 0.5);
-        background: linear-gradient(135deg, #2563eb, #111827);
+        border-color: rgba(34, 197, 94, 0.55);
+        background: linear-gradient(135deg, #22c55e, #052e16);
         width: 100%;
       }
 
@@ -487,9 +487,9 @@
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
-        color: #dbeafe;
-        background: rgba(59, 130, 246, 0.13);
-        border: 1px solid rgba(59, 130, 246, 0.22);
+        color: #dcfce7;
+        background: rgba(34, 197, 94, 0.13);
+        border: 1px solid rgba(34, 197, 94, 0.24);
         border-radius: 999px;
         padding: 5px 9px;
         font-size: 11px;
@@ -563,7 +563,7 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        background: linear-gradient(135deg, #1d4ed8 0%, #000 100%);
+        background: linear-gradient(135deg, #22c55e 0%, #052e16 100%);
       }
 
       .gate h2 {
@@ -669,7 +669,7 @@
 
       .auth-input:focus {
         border-color: var(--accent);
-        box-shadow: 0 0 0 4px rgba(59,130,246,0.15);
+        box-shadow: 0 0 0 4px rgba(34,197,94,0.16);
       }
 
       .auth-message {
@@ -690,9 +690,9 @@
 
       .auth-message.success {
         display: block;
-        color: #bfdbfe;
-        background: rgba(59,130,246,0.12);
-        border: 1px solid rgba(59,130,246,0.24);
+        color: #dcfce7;
+        background: rgba(34,197,94,0.12);
+        border: 1px solid rgba(34,197,94,0.24);
       }
 
       .pagination {
